@@ -41,7 +41,7 @@ document.body.appendChild(new MyElement);
 ```
 No `extends` will be performed, create extends from your own classes if needed (i.e. from `MyElement.prototype`).
 
-### Why resurrecting s deprecated API?
+### Why resurrecting a deprecated API?
 Let's face it. Custom Elements V0 API was ugly, and yet most popular Custom Elements projects used it in production and behind my polyfill.
 
 Google [AMPHTML](https://www.ampproject.org) and [AFrame](https://aframe.io) are just two, out of many major projects, that used V0, while everyone else on the Web is still trying to fix transpilation problems with V1 classes.
