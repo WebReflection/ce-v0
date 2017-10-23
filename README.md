@@ -6,7 +6,7 @@ A cross browser [document.registerElement](https://github.com/WebReflection/docu
 ### How to use it
 Simply include the polyfill on top of your page and use `document.registerElement(name, info)` like the good old days.
 ```html
-<script src="https://unpkg.com/ce-v0/min.js"></script>
+<script src="https://unpkg.com/ce-v0@latest/min.js"></script>
 ```
 
 ### V0 API
