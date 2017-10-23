@@ -240,23 +240,23 @@
         })
       ;
       function CustomElementV0() {
-        var node = observe(construct(Constructor, arguments, CustomElementV0));
-        node[CREATED_CALLBACK]();
-        return node;
+        return construct(
+          Constructor,
+          arguments,
+          CustomElementV0
+        )[CREATED_CALLBACK]();
       }
       CustomElementV0.prototype = create(proto);
-      define(CREATED_CALLBACK, function () {
-        defineProperty(observe(this), CREATED_CALLBACK, {value: noop});
-        if (created) created.call(this);
-      });
-      define(ATTRIBUTE_CHANGED_CALLBACK, function () {
-        this[CREATED_CALLBACK]();
-        if (attributeChanged) attributeChanged.apply(this, arguments);
-      });
-      define(CONNECTED_CALLBACK, function () {
-        this[CREATED_CALLBACK]();
-        if (attached) attached.apply(this, arguments);
-      });
+      define(CREATED_CALLBACK, created ?
+        function () {
+          return created.call(observe(this)), this;
+        } :
+        function () {
+          return observe(this);
+        }
+      );
+      if (attributeChanged) define(ATTRIBUTE_CHANGED_CALLBACK, attributeChanged);
+      if (attached) define(CONNECTED_CALLBACK, attached);
       if (detached) define(DISCONNECTED_CALLBACK, detached);
       customElements.define(name, CustomElementV0);
       return CustomElementV0;

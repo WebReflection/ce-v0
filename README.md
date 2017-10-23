@@ -9,6 +9,9 @@ Simply include the polyfill on top of your page and use `document.registerElemen
 <script src="https://unpkg.com/ce-v0@latest/min.js"></script>
 ```
 
+#### Live tests
+You can verify your browser compatibility [live](https://webreflection.github.io/ce-v0/).
+
 ### V0 API
 ```js
 var MyElement = document.registerElement(
@@ -17,18 +20,27 @@ var MyElement = document.registerElement(
     prototype: Object.create(
       HTMLElement.prototype, {
       createdCallback: {value: function() {
-        console.log('custom element ready');
+        console.log('custom element ready/upgraded');
+        // better than V1 constructor() {}
+        // because the element here will always
+        // be already upgraded
       }},
       attachedCallback: {value: function() {
         console.log('custom element connected');
+        // same as connectedCallback
       }},
       detachedCallback: {value: function() {
         console.log('custom element disconnected');
+        // same as disconnectedCallback
       }},
       attributeChangedCallback: {value: function(
         name, oldValue, newValue
       ) {
         console.log('*any* attribute change');
+        // different from V1 in two ways:
+        //  * it does not trigger twice with same attribute value
+        //  * it triggers for any attribute change, no need
+        //    to define static get observedAttributes() {[...]}
       }}
     })
   }
