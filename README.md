@@ -9,8 +9,10 @@ Simply include the polyfill on top of your page and use `document.registerElemen
 <script src="https://unpkg.com/ce-v0@latest/min.js"></script>
 ```
 
-#### Live tests
-You can verify your browser compatibility [live](https://webreflection.github.io/ce-v0/).
+### Compatibility
+Same compatibility of original polyfill: every Mobile and Desktop browser.
+
+You can **verify** your browser **compatibility [live](https://webreflection.github.io/ce-v0/)**.
 
 ### V0 API
 ```js
@@ -73,3 +75,26 @@ As result, this polyfill weight less than 3KB and it gives a robust, reliable, p
 
 #### Still future friendly!
 By no means this project wants to stop adoption or usage of V1 API, quite the opposite, it's waiting for the time where every browser ships it natively, and every part of V0 related code can be dropped to make it a 1KB downgrade fully based on V1, like it is already for both Chrome and Safari.
+
+### Don't you like it? Use Component
+```js
+var MyElement = new Component({
+  // the Custom Element name
+  name: 'my-element',
+  // one or more static property
+  static: {
+    TEST: 123,
+    method() {}
+  },
+  // alias for createdCallback
+  constructor() {},
+  // alias for attributeChangedCallback
+  onattribute() {},
+  // alias for attachedCallback
+  onconnected() {},
+  // alias for detachedCallback
+  ondisconnected() {}
+  // any other prototype definition is allowed
+  // including getters and setters
+});
+```

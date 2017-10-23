@@ -451,5 +451,46 @@ wru.test(typeof document === 'undefined' ? [] : [
         );
       }), 100);
     }
+  }, {
+    name: 'Component',
+    test: function () {
+      var info = [];
+      var MyElement = new Component({
+        'static': { TEST: 123 },
+        name: 'my-element',
+        constructor: function () {
+          info.push('constructor');
+        },
+        onattribute: function () {
+          info.push('onattribute');
+        },
+        onconnected: function () {
+          info.push('onconnected');
+        },
+        ondisconnected: function () {
+          info.push('ondisconnected');
+          this.z();
+        },
+        z: function () {
+          info.push('attribute', 'static');
+          wru.assert('attribute is correct', this.getAttribute('test') === '456');
+          wru.assert('class property is correct', MyElement.TEST === 123);
+        }
+      });
+      document.body.appendChild(new MyElement);
+      setTimeout(wru.async(function () {
+        wru.assert('constructor', info[0] === 'constructor');
+        wru.assert('onconnected', info[1] === 'onconnected');
+        document.body.lastChild.setAttribute('test', 456);
+        setTimeout(wru.async(function () {
+          wru.assert('onattribute', info[2] === 'onattribute');
+          document.body.removeChild(document.body.lastChild);
+          setTimeout(wru.async(function () {
+            wru.assert('ondisconnected', info[3] === 'ondisconnected');
+            wru.assert('all fine', info.length === 6);
+          }), 20);
+        }), 20);
+      }), 20);
+    }
   }
 ]);
