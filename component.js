@@ -58,3 +58,5 @@ function Component(config) {'use strict';
     Super
   );
 }
+
+try { module.exports = Component; } catch(o_O) {}
