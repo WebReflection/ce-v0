@@ -1,0 +1,25 @@
+{
+  "name": "ce-v0",
+  "version": "0.0.0",
+  "description": "Custom Elements V0 API",
+  "main": "ce-v0.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebReflection/ce-v0.git"
+  },
+  "keywords": [
+    "custom",
+    "elements",
+    "v0",
+    "polyfill"
+  ],
+  "author": "Andrea Giammarchi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WebReflection/ce-v0/issues"
+  },
+  "homepage": "https://github.com/WebReflection/ce-v0#readme"
+}
