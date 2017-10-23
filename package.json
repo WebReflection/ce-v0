@@ -1,6 +1,6 @@
 {
   "name": "ce-v0",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Custom Elements V0 API",
   "main": "index.js",
   "scripts": {
