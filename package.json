@@ -2,9 +2,13 @@
   "name": "ce-v0",
   "version": "0.0.0",
   "description": "Custom Elements V0 API",
-  "main": "ce-v0.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run minify && npm run size",
+    "license": "echo '/*! Copyright (c) 2017, Andrea Giammarchi (ISC) */'>min.js",
+    "minify": "npm run license && uglifyjs index.js --comments=/^!/ --compress --mangle >> min.js",
+    "size": "cat index.js | wc -c; cat min.js | wc -c; gzip -c min.js | wc -c",
+    "test": "echo 'coming soon'"
   },
   "repository": {
     "type": "git",
@@ -14,12 +18,17 @@
     "custom",
     "elements",
     "v0",
-    "polyfill"
+    "polyfill",
+    "v1",
+    "downgrade"
   ],
   "author": "Andrea Giammarchi",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/WebReflection/ce-v0/issues"
   },
-  "homepage": "https://github.com/WebReflection/ce-v0#readme"
+  "homepage": "https://github.com/WebReflection/ce-v0#readme",
+  "devDependencies": {
+    "uglify-js": "^3.1.5"
+  }
 }
