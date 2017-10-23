@@ -3,4 +3,5 @@ node_modules/*
 test/*
 .gitignore
 .travis.yml
+index.html
 package-lock.json

@@ -217,6 +217,15 @@
         attributeChanged = proto[ATTRIBUTE_CHANGED_CALLBACK],
         attached = proto[ATTACHED_CALLBACK],
         detached = proto[DETACHED_CALLBACK],
+        observe = attributeChanged ?
+          function (node) {
+            mo.observe(node, {
+              attributes: true,
+              attributeOldValue: true
+            });
+            return node;
+          } :
+          Object,
         define = function (name, value) {
           defineProperty(CustomElementV0.prototype, name, {
             configurable: true,
@@ -225,29 +234,19 @@
           });
         },
         mo = attributeChanged && new MutationObserver(function (mutations) {
-          for (var
-            mutation, node, name,
-            i = 0, length = mutations.length;
-            i < length; i++
-          ) {
-            mutation = mutations[i];
-            node = mutation.target;
-            name = mutation.attributeName;
-            node[ATTRIBUTE_CHANGED_CALLBACK](
-              name,
-              mutation.oldValue,
-              node.getAttribute(name)
-            );
+          for (var i = 0, length = mutations.length; i < length; i++) {
+            notifyAttributeChanged(mutations[i]);
           }
         })
       ;
       function CustomElementV0() {
-        return construct(Constructor, arguments, CustomElementV0);
+        var node = observe(construct(Constructor, arguments, CustomElementV0));
+        node[CREATED_CALLBACK]();
+        return node;
       }
       CustomElementV0.prototype = create(proto);
       define(CREATED_CALLBACK, function () {
-        defineProperty(this, CREATED_CALLBACK, {value: noop});
-        if (attributeChanged) mo.observe(this, {attributes: true});
+        defineProperty(observe(this), CREATED_CALLBACK, {value: noop});
         if (created) created.call(this);
       });
       define(ATTRIBUTE_CHANGED_CALLBACK, function () {
@@ -464,7 +463,7 @@
             }
             return new MutationObserver(function (records) {
               for (var
-                current, node, newValue,
+                current,
                 i = 0, length = records.length; i < length; i++
               ) {
                 current = records[i];
@@ -472,19 +471,7 @@
                   checkEmAll(current.addedNodes, attached);
                   checkEmAll(current.removedNodes, detached);
                 } else {
-                  node = current.target;
-                  if (notFromInnerHTMLHelper &&
-                      node[ATTRIBUTE_CHANGED_CALLBACK] &&
-                      current.attributeName !== 'style') {
-                    newValue = getAttribute.call(node, current.attributeName);
-                    if (newValue !== current.oldValue) {
-                      node[ATTRIBUTE_CHANGED_CALLBACK](
-                        current.attributeName,
-                        current.oldValue,
-                        newValue
-                      );
-                    }
-                  }
+                  notifyAttributeChanged(current);
                 }
               }
             });
@@ -572,6 +559,27 @@
       if (setup) patch(node, protos[i]);
       return node;
     };
+  }
+
+  function notifyAttributeChanged(mutation) {
+    var
+      node = mutation.target,
+      name = mutation.attributeName,
+      oldValue = mutation.oldValue,
+      newValue
+    ;
+    if (notFromInnerHTMLHelper &&
+        node[ATTRIBUTE_CHANGED_CALLBACK] &&
+        name !== 'style') {
+      newValue = getAttribute.call(node, name);
+      if (newValue !== oldValue) {
+        node[ATTRIBUTE_CHANGED_CALLBACK](
+          name,
+          oldValue,
+          newValue
+        );
+      }
+    }
   }
 
   function ASAP() {
