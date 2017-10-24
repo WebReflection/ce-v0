@@ -200,7 +200,7 @@
 
     // customElements ready browsers
     customElements = window.customElements,
-    noop, construct
+    noop, construct, nativeDefine
   ;
 
   // only if needed
@@ -209,6 +209,7 @@
   else if (customElements) {
     noop = function () {};
     construct = Reflect.construct;
+    nativeDefine = customElements.define.bind(customElements);
     document.registerElement = function registerElement(name, info) {
       var
         proto = info.prototype,
@@ -258,7 +259,7 @@
       if (attributeChanged) define(ATTRIBUTE_CHANGED_CALLBACK, attributeChanged);
       if (attached) define(CONNECTED_CALLBACK, attached);
       if (detached) define(DISCONNECTED_CALLBACK, detached);
-      customElements.define(name, CustomElementV0);
+      nativeDefine(name, CustomElementV0);
       return CustomElementV0;
     };
   }
