@@ -89,3 +89,7 @@ const MyElement = new Component({
   // including getters and setters
 });
 ```
+
+#### Component Caveats
+
+If you use static methods / properties inside methods you need to define your components upfront.
