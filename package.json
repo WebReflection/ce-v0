@@ -3,6 +3,7 @@
   "version": "0.2.1",
   "description": "Custom Elements V0 API",
   "main": "index.js",
+  "browser": "min.js",
   "scripts": {
     "build": "npm run minify && npm run component && npm run size",
     "component": "uglifyjs component.js --comments=/^!/ --compress --mangle -o comp.js",
